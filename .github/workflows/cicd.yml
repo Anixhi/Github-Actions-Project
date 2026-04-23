@@ -23,6 +23,10 @@ jobs:
     runs-on: self-hosted
     needs: compile
 
+  security-checks:
+    runs-on: self-hosted
+    needs: compile
+
     steps:
     - uses: actions/checkout@v4
     - name: Trivy Installation
@@ -33,7 +37,7 @@ jobs:
         sudo apt-get update -y
         sudo apt-get install -y trivy
     - name: Trivy FS scan
-      run: trivy fs --format table -o fs-report.json .
+      run: trivy fs --format table --severity HIGH,CRITICAL --skip-update --no-progress -o fs-report.json .
 
     - name: Gitleaks installation
       run: sudo apt install gitleaks -y
